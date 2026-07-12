@@ -6,49 +6,61 @@
 <title>TOEIC英語学習アプリ</title>
 <style>
   :root{
-    --bg:#f4f6fb; --card:#ffffff; --text:#1e2433; --sub:#6b7387;
-    --accent:#3556e0; --accent-light:#e8edff; --accent-dark:#2340bd;
-    --ok:#18a05a; --ok-bg:#e5f7ee; --ng:#d93a49; --ng-bg:#fdeaec;
-    --border:#e2e6f0; --shadow:0 2px 10px rgba(30,40,80,.08);
+    --bg:#F3F7FB; --card:#ffffff; --text:#2B3648; --sub:#71829B;
+    --accent:#4E93D1; --accent-light:#DCEBF9; --accent-dark:#2F6FA8;
+    --warm:#E9975A; --warm-light:#FBE7D2; --warm-ink:#8A5326;
+    --ok:#4E9C79; --ok-bg:#E7F3EC; --ng:#DD6B62; --ng-bg:#FBE4E1;
+    --border:#E4EBF4; --shadow:0 3px 12px rgba(66,108,150,.10);
     --radius:14px;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   body{font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
     background:var(--bg); color:var(--text); min-height:100vh; line-height:1.6;}
   .wrap{max-width:640px; margin:0 auto; padding:16px 16px 48px;}
-  header.app{background:linear-gradient(135deg,#3556e0,#6a3ce0); color:#fff;
-    padding:20px 16px; text-align:center;}
-  header.app h1{font-size:1.25rem; letter-spacing:.05em;}
-  header.app p{font-size:.8rem; opacity:.85; margin-top:2px;}
+  header.app{position:relative; overflow:hidden; color:#fff;
+    background:linear-gradient(150deg,#4E93D1 0%,#7DB8E4 55%,#E9A96B 140%);
+    padding:24px 16px 26px; text-align:center;}
+  header.app::before{content:""; position:absolute; top:-70%; right:-8%;
+    width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,255,.32), transparent 70%);}
+  header.app::after{content:""; position:absolute; left:-10%; bottom:-80%;
+    width:240px; height:240px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,255,.16), transparent 70%);}
+  header.app h1{position:relative; font-family:"Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+    font-size:1.3rem; letter-spacing:.05em;}
+  header.app p{position:relative; font-size:.8rem; opacity:.92; margin-top:2px;}
   .screen{display:none;}
   .screen.active{display:block; animation:fade .25s ease;}
   @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
 
   /* ---- home ---- */
   .section-label{font-size:.8rem; font-weight:700; color:var(--sub); margin:22px 4px 8px; letter-spacing:.08em;}
-  .level-seg{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; background:var(--card);
-    border:1px solid var(--border); border-radius:var(--radius); padding:6px; box-shadow:var(--shadow);}
+  .level-seg{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; background:var(--accent-light);
+    border-radius:var(--radius); padding:6px;}
   .level-seg button{border:none; background:transparent; padding:10px 4px; border-radius:10px;
-    font-size:.85rem; font-weight:600; color:var(--sub); cursor:pointer; font-family:inherit;}
-  .level-seg button.sel{background:var(--accent); color:#fff;}
+    font-size:.85rem; font-weight:700; color:var(--accent-dark); cursor:pointer; font-family:inherit;}
+  .level-seg button.sel{background:var(--accent); color:#fff; box-shadow:var(--shadow);}
   .modes{display:grid; gap:10px;}
   .mode-btn{display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--border);
     border-radius:var(--radius); padding:16px; cursor:pointer; box-shadow:var(--shadow);
     font-family:inherit; text-align:left; width:100%; transition:transform .06s ease;}
   .mode-btn:active{transform:scale(.985);}
-  .mode-btn .icon{font-size:1.7rem; width:48px; height:48px; display:flex; align-items:center;
+  .mode-btn .icon{width:48px; height:48px; display:flex; align-items:center;
     justify-content:center; background:var(--accent-light); border-radius:12px; flex-shrink:0;}
+  .mode-btn .icon svg{width:23px; height:23px; color:var(--accent-dark);}
   .mode-btn .t{font-weight:700; font-size:1rem;}
   .mode-btn .d{font-size:.78rem; color:var(--sub); margin-top:1px;}
-  .mode-btn.review .icon{background:#fff3e0;}
+  .mode-btn.review .icon{background:var(--warm-light);}
+  .mode-btn.review .icon svg{color:var(--warm-ink);}
   .mode-btn.disabled{opacity:.45; pointer-events:none;}
   .badge{margin-left:auto; background:var(--accent-light); color:var(--accent-dark);
     font-size:.75rem; font-weight:700; padding:3px 10px; border-radius:99px; flex-shrink:0;}
-  .mode-btn.review .badge{background:#fff3e0; color:#c05a00;}
+  .mode-btn.review .badge{background:var(--warm-light); color:var(--warm-ink);}
   .summary{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
   .sum-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
     padding:14px 8px; text-align:center; box-shadow:var(--shadow);}
-  .sum-card .num{font-size:1.35rem; font-weight:800; color:var(--accent);}
+  .sum-card .num{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+    font-size:1.35rem; font-weight:800; color:var(--accent);}
   .sum-card .lab{font-size:.72rem; color:var(--sub);}
   .link-row{display:flex; justify-content:center; gap:18px; margin-top:20px;}
   .text-link{background:none; border:none; color:var(--accent); font-size:.85rem; cursor:pointer;
@@ -61,7 +73,7 @@
   .quiz-top .mode-chip{background:var(--accent); color:#fff; font-size:.75rem; font-weight:700;
     padding:4px 12px; border-radius:99px;}
   .quiz-top .score{font-size:.85rem; color:var(--sub); font-weight:600;}
-  .quiz-top .streak{font-size:.85rem; color:#c05a00; font-weight:700;}
+  .quiz-top .streak{font-size:.85rem; color:var(--warm-ink); font-weight:700;}
   .quiz-top .quit{margin-left:auto; background:var(--card); border:1px solid var(--border);
     border-radius:10px; padding:6px 14px; font-size:.8rem; cursor:pointer; font-family:inherit; color:var(--sub);}
   .q-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
@@ -83,8 +95,8 @@
   .choice.locked{cursor:default;}
   .feedback{border-radius:var(--radius); padding:14px 16px; margin-top:14px; display:none;}
   .feedback.show{display:block; animation:fade .2s ease;}
-  .feedback.ok{background:var(--ok-bg); border:1px solid #bfe8d2;}
-  .feedback.ng{background:var(--ng-bg); border:1px solid #f3c4c9;}
+  .feedback.ok{background:var(--ok-bg); border:1px solid #C9E4D4;}
+  .feedback.ng{background:var(--ng-bg); border:1px solid #F2CFC8;}
   .feedback .verdict{font-weight:800; font-size:1rem;}
   .feedback.ok .verdict{color:var(--ok);}
   .feedback.ng .verdict{color:var(--ng);}
@@ -148,27 +160,27 @@
     <div class="section-label">学習モード</div>
     <div class="modes">
       <button class="mode-btn" data-mode="vocab">
-        <span class="icon">📖</span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.6-1-3.6-1.3-5.5-.8v11c1.9-.5 3.9-.2 5.5.8 1.6-1 3.6-1.3 5.5-.8v-11c-1.9-.5-3.9-.2-5.5.8Z"/><path d="M12 6.5v11"/></svg></span>
         <span><span class="t">単語</span><br><span class="d">英→和・和→英の4択</span></span>
         <span class="badge" id="cnt-vocab">0問</span>
       </button>
       <button class="mode-btn" data-mode="grammar">
-        <span class="icon">✏️</span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15.2 4.8 19 8.6l-9.3 9.3H6v-3.7l9.2-9.4Z"/><path d="M6 19h5.5"/></svg></span>
         <span><span class="t">文法</span><br><span class="d">文章の穴埋め（Part5形式）</span></span>
         <span class="badge" id="cnt-grammar">0問</span>
       </button>
       <button class="mode-btn" data-mode="idiom">
-        <span class="icon">🔗</span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="9" width="7" height="6" rx="3"/><rect x="13.5" y="9" width="7" height="6" rx="3"/><path d="M10.5 12h3"/></svg></span>
         <span><span class="t">熟語・コロケーション</span><br><span class="d">句動詞と前置詞の組み合わせ</span></span>
         <span class="badge" id="cnt-idiom">0問</span>
       </button>
       <button class="mode-btn" data-mode="mix">
-        <span class="icon">🎲</span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.2h4.3c2.7 0 3.6 1.2 4.9 2.9M20.5 6.2h-3.3M20.5 6.2 18 3.7M20.5 6.2 18 8.7"/><path d="M3 17.8h4.3c2.7 0 3.6-1.2 4.9-2.9M20.5 17.8h-3.3M20.5 17.8 18 15.3M20.5 17.8 18 20.3"/></svg></span>
         <span><span class="t">ミックス</span><br><span class="d">全ジャンルからランダム出題</span></span>
         <span class="badge" id="cnt-mix">0問</span>
       </button>
       <button class="mode-btn review" data-mode="review" id="reviewBtn">
-        <span class="icon">🔥</span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12a7 7 0 1 1-2.3-5.2"/><path d="M19 4v4h-4"/></svg></span>
         <span><span class="t">復習</span><br><span class="d">間違えた問題だけ出題</span></span>
         <span class="badge" id="cnt-review">0問</span>
       </button>
