@@ -102,6 +102,19 @@
   .feedback.ng .verdict{color:var(--ng);}
   .feedback .exp{font-size:.88rem; margin-top:6px;}
   .feedback .ex-sent{font-size:.85rem; color:var(--sub); margin-top:6px; font-style:italic;}
+  .feedback .gloss{margin-top:12px; display:none; flex-direction:column; gap:5px;}
+  .feedback .gloss.show{display:flex;}
+  .feedback .gloss .gl-head{font-size:.74rem; font-weight:700; color:var(--sub); letter-spacing:.04em; margin-bottom:1px;}
+  .gl-item{display:flex; align-items:baseline; gap:8px; background:var(--card); border:1px solid var(--border);
+    border-radius:9px; padding:7px 10px; font-size:.85rem;}
+  .gl-item .gl-en{font-weight:700; flex-shrink:0;}
+  .gl-item .gl-ja{color:var(--sub);}
+  .gl-item .gl-mark{margin-left:auto; font-size:.72rem; font-weight:700; flex-shrink:0;}
+  .gl-item.g-ok{background:var(--ok-bg); border-color:var(--ok);}
+  .gl-item.g-ok .gl-en{color:var(--ok);}
+  .gl-item.g-ok .gl-mark{color:var(--ok);}
+  .gl-item.g-ng{background:var(--ng-bg); border-color:var(--ng);}
+  .gl-item.g-ng .gl-mark{color:var(--ng);}
   .next-row{margin-top:14px; display:none;}
   .next-row.show{display:block;}
   .next-btn{width:100%; background:var(--accent); color:#fff; border:none; border-radius:12px;
@@ -217,6 +230,7 @@
       <div class="verdict" id="fbVerdict"></div>
       <div class="exp" id="fbExp"></div>
       <div class="ex-sent" id="fbEx"></div>
+      <div class="gloss" id="fbGloss"></div>
     </div>
     <div class="next-row" id="nextRow">
       <button class="next-btn" id="nextBtn" onclick="nextQuestion()">次の問題へ</button>
@@ -2816,18 +2830,22 @@ function makeQuestion(d){
     const x=IDIOMS[d.i];
     const ej=Math.random()<0.5;
     if(ej){
-      const wrong=sample(IDIOMS,3,y=>y.m!==x.m).map(y=>y.m);
-      const choices=shuffle([x.m,...wrong]);
+      const opts=[{t:x.m,en:x.w,ja:x.m}].concat(
+        sample(IDIOMS,3,y=>y.m!==x.m).map(y=>({t:y.m,en:y.w,ja:y.m})));
+      shuffle(opts);
       return {qid:"i:"+x.w, genre:"熟語", lv:x.lv,
         text:'<span class="big">'+esc(x.w)+'</span><br><span style="font-size:.9rem;color:var(--sub)">この熟語の意味は？</span>',
-        choices:choices.map(esc), answer:choices.indexOf(x.m),
+        choices:opts.map(o=>esc(o.t)), answer:opts.findIndex(o=>o.t===x.m),
+        gloss:opts.map(o=>({en:o.en,ja:o.ja})),
         exp:esc(x.w)+"＝「"+esc(x.m)+"」", ex:x.ex};
     }else{
-      const wrong=sample(IDIOMS,3,y=>y.w!==x.w).map(y=>y.w);
-      const choices=shuffle([x.w,...wrong]);
+      const opts=[{t:x.w,en:x.w,ja:x.m}].concat(
+        sample(IDIOMS,3,y=>y.w!==x.w).map(y=>({t:y.w,en:y.w,ja:y.m})));
+      shuffle(opts);
       return {qid:"i:"+x.w, genre:"熟語", lv:x.lv,
         text:'「'+esc(x.m)+'」<br><span style="font-size:.9rem;color:var(--sub)">を意味する熟語は？</span>',
-        choices:choices.map(esc), answer:choices.indexOf(x.w),
+        choices:opts.map(o=>esc(o.t)), answer:opts.findIndex(o=>o.t===x.w),
+        gloss:opts.map(o=>({en:o.en,ja:o.ja})),
         exp:esc(x.w)+"＝「"+esc(x.m)+"」", ex:x.ex};
     }
   }
@@ -2839,16 +2857,22 @@ function makeQuestion(d){
   if(cands.length<3) cands=WORDS.filter(y=>y.w!==w.w&&y.m!==w.m);
   const wrong=sample(cands,3);
   if(ej){
-    const choices=shuffle([w.m,...wrong.map(y=>y.m)]);
+    const opts=[{t:w.m,en:w.w,ja:w.m}].concat(
+      wrong.map(y=>({t:y.m,en:y.w,ja:y.m})));
+    shuffle(opts);
     return {qid:"v:"+wkey(w), genre:"単語（英→和）", lv:w.lv,
       text:'<span class="big">'+esc(w.w)+'</span><br><span style="font-size:.9rem;color:var(--sub)">['+esc(w.p)+'] この単語の意味は？</span>',
-      choices:choices.map(esc), answer:choices.indexOf(w.m),
+      choices:opts.map(o=>esc(o.t)), answer:opts.findIndex(o=>o.t===w.m),
+      gloss:opts.map(o=>({en:o.en,ja:o.ja})),
       exp:esc(w.w)+"＝「"+esc(w.m)+"」", ex:w.ex};
   }else{
-    const choices=shuffle([w.w,...wrong.map(y=>y.w)]);
+    const opts=[{t:w.w,en:w.w,ja:w.m}].concat(
+      wrong.map(y=>({t:y.w,en:y.w,ja:y.m})));
+    shuffle(opts);
     return {qid:"v:"+wkey(w), genre:"単語（和→英）", lv:w.lv,
       text:'「'+esc(w.m)+'」<br><span style="font-size:.9rem;color:var(--sub)">['+esc(w.p)+'] を意味する単語は？</span>',
-      choices:choices.map(esc), answer:choices.indexOf(w.w),
+      choices:opts.map(o=>esc(o.t)), answer:opts.findIndex(o=>o.t===w.w),
+      gloss:opts.map(o=>({en:o.en,ja:o.ja})),
       exp:esc(w.w)+"＝「"+esc(w.m)+"」", ex:w.ex};
   }
 }
@@ -2953,6 +2977,21 @@ function answer(i){
   document.getElementById("fbVerdict").textContent=ok?"⭕ 正解！":"❌ 不正解";
   document.getElementById("fbExp").textContent=curQ.exp||"";
   document.getElementById("fbEx").textContent=curQ.ex?("例文: "+curQ.ex):"";
+
+  const gl=document.getElementById("fbGloss");
+  if(curQ.gloss){
+    gl.innerHTML="<div class='gl-head'>選択肢の意味</div>"+curQ.gloss.map((g,k)=>{
+      let cls="gl-item", mark="";
+      if(k===curQ.answer){cls+=" g-ok"; mark="正解";}
+      else if(k===i){cls+=" g-ng"; mark="あなたの回答";}
+      return "<div class='"+cls+"'><span class='gl-en'>"+esc(g.en)+"</span>"
+        +"<span class='gl-ja'>"+esc(g.ja)+"</span>"
+        +(mark?"<span class='gl-mark'>"+mark+"</span>":"")+"</div>";
+    }).join("");
+    gl.className="gloss show";
+  }else{
+    gl.className="gloss";
+  }
   document.getElementById("nextRow").className="next-row show";
   document.getElementById("nextBtn").focus();
   updateQuizTop();
