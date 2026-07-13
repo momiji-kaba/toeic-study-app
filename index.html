@@ -162,6 +162,64 @@
     background:#1B2440; color:#fff; padding:12px 22px; border-radius:99px; font-size:.9rem;
     font-weight:600; opacity:0; pointer-events:none; transition:all .25s ease; z-index:99;
     box-shadow:0 8px 24px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08); max-width:90vw; text-align:center;}
+
+  /* ---- gamification: level / xp / streak ---- */
+  .gamify-bar{display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--border);
+    border-radius:var(--radius); padding:14px 16px; margin-top:18px; box-shadow:var(--shadow);}
+  .level-badge{width:52px; height:52px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-weight:800; font-size:.82rem; box-shadow:var(--glow);}
+  .gamify-info{flex:1; min-width:0;}
+  .gm-title{font-size:.85rem; font-weight:700; color:var(--text);}
+  .xp-bar{height:7px; background:rgba(255,255,255,.08); border-radius:99px; overflow:hidden; margin-top:6px;}
+  .xp-bar i{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:99px; transition:width .3s ease;}
+  .gm-xp-text{font-size:.7rem; color:var(--sub); margin-top:4px;}
+  .streak-flame{font-size:.85rem; font-weight:700; color:var(--warm-ink); white-space:nowrap; flex-shrink:0; text-align:right;}
+
+  /* ---- gamification: challenge mode toggle ---- */
+  .challenge-toggle{display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--border);
+    border-radius:var(--radius); padding:14px 16px; margin-top:12px; box-shadow:var(--shadow);}
+  .ct-title{font-weight:700; font-size:.92rem; color:var(--text);}
+  .ct-desc{font-size:.74rem; color:var(--sub); margin-top:1px;}
+  .switch{position:relative; display:inline-block; width:46px; height:26px; flex-shrink:0;}
+  .switch input{opacity:0; width:0; height:0;}
+  .switch .slider{position:absolute; inset:0; cursor:pointer; background:rgba(255,255,255,.15); border-radius:99px; transition:.2s;}
+  .switch .slider::before{content:""; position:absolute; width:20px; height:20px; left:3px; top:3px;
+    background:#fff; border-radius:50%; transition:.2s;}
+  .switch input:checked+.slider{background:linear-gradient(135deg,var(--accent),var(--accent2));}
+  .switch input:checked+.slider::before{transform:translateX(20px);}
+
+  /* ---- gamification: hearts ---- */
+  .hearts{display:none; gap:3px; align-items:center;}
+  .heart{font-size:1.25rem; line-height:1; color:var(--ng); transition:transform .15s;}
+  .heart.empty{color:rgba(255,255,255,.15);}
+  .heart.brk{animation:heartBreak .45s ease;}
+  @keyframes heartBreak{0%{transform:scale(1.4);} 50%{transform:scale(.7) rotate(-10deg);} 100%{transform:scale(1);}}
+
+  /* ---- gamification: combo escalation ---- */
+  .quiz-top .streak.combo-mid{color:#FBBF6B; text-shadow:0 0 8px rgba(245,166,35,.5);}
+  .quiz-top .streak.combo-hot{color:#FF8A5B; text-shadow:0 0 12px rgba(255,138,91,.7); animation:comboPulse 1s ease-in-out infinite;}
+  @keyframes comboPulse{0%,100%{transform:scale(1);} 50%{transform:scale(1.15);}}
+
+  /* ---- gamification: game over screen ---- */
+  .gameover-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    padding:36px 20px; text-align:center; box-shadow:var(--shadow); margin-top:32px;}
+  .go-icon{font-size:3rem; margin-bottom:10px;}
+  .go-title{font-size:1.15rem; font-weight:800; margin-bottom:18px; color:var(--text);}
+  .go-stats{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:22px;}
+  .go-stat{background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:12px 8px;}
+  .go-stat .n{font-size:1.3rem; font-weight:800; background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .go-stat .l{font-size:.72rem; color:var(--sub); margin-top:2px;}
+  .gameover-card .next-btn{margin-bottom:10px;}
+
+  /* ---- gamification: achievement badges ---- */
+  .badge-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(88px,1fr)); gap:10px;}
+  .badge-item{text-align:center; padding:10px 6px; border-radius:12px; background:var(--card2);
+    border:1px solid var(--border); opacity:.35; filter:grayscale(1); transition:opacity .2s,filter .2s;}
+  .badge-item.unlocked{opacity:1; filter:none; border-color:rgba(124,124,250,.4); box-shadow:0 0 0 1px rgba(124,124,250,.25);}
+  .badge-item .bi-icon{font-size:1.5rem;}
+  .badge-item .bi-name{font-size:.66rem; font-weight:700; margin-top:4px; color:var(--text);}
+  .badge-item .bi-desc{font-size:.58rem; color:var(--sub); margin-top:2px;}
   #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
   @media (max-width:400px){
     .q-text{font-size:1.05rem;}
@@ -179,6 +237,24 @@
 
   <!-- ============ ホーム ============ -->
   <div id="scr-home" class="screen active">
+    <div class="gamify-bar">
+      <div class="level-badge" id="gmLevel">Lv.1</div>
+      <div class="gamify-info">
+        <div class="gm-title" id="gmTitle">見習い学習者</div>
+        <div class="xp-bar"><i id="gmXpFill" style="width:0%"></i></div>
+        <div class="gm-xp-text" id="gmXpText">0 / 50 XP</div>
+      </div>
+      <div class="streak-flame" id="gmStreak">🔥 0日連続</div>
+    </div>
+
+    <div class="challenge-toggle">
+      <label class="switch"><input type="checkbox" id="challengeToggle"><span class="slider"></span></label>
+      <div>
+        <div class="ct-title">⚔️ チャレンジモード</div>
+        <div class="ct-desc">ハート5つ制。間違えると1つ減り、0で結果画面へ</div>
+      </div>
+    </div>
+
     <div class="section-label">レベル（TOEICスコア目安）</div>
     <div class="level-seg" id="levelSeg">
       <button data-lv="0" class="sel">すべて</button>
@@ -236,6 +312,7 @@
       <span class="mode-chip" id="quizModeChip"></span>
       <span class="score" id="quizScore">0/0</span>
       <span class="streak" id="quizStreak"></span>
+      <span class="hearts" id="quizHearts"></span>
       <button class="quit" onclick="goHome()">終了</button>
     </div>
     <div class="q-card">
@@ -255,12 +332,25 @@
     <div class="kbd-hint">キーボード: 1〜4 で回答 / Enter で次へ</div>
   </div>
 
+  <!-- ============ ゲームオーバー（チャレンジモード） ============ -->
+  <div id="scr-gameover" class="screen">
+    <div class="gameover-card">
+      <div class="go-icon">💔</div>
+      <div class="go-title">ハートが尽きました！</div>
+      <div class="go-stats" id="goStats"></div>
+      <button class="next-btn" onclick="retryChallenge()">もう一度挑戦</button>
+      <button class="back-btn" onclick="goHome()">ホームに戻る</button>
+    </div>
+  </div>
+
   <!-- ============ 統計 ============ -->
   <div id="scr-stats" class="screen">
     <div class="section-label">ジャンル別成績</div>
     <div class="stats-block"><table class="st" id="stGenre"></table></div>
     <div class="section-label">レベル別成績</div>
     <div class="stats-block"><table class="st" id="stLevel"></table></div>
+    <div class="section-label">実績バッジ</div>
+    <div class="stats-block"><div class="badge-grid" id="badgeGrid"></div></div>
     <div class="section-label">間違いの多い問題 TOP20</div>
     <div class="stats-block" id="stWrong"></div>
     <button class="back-btn" onclick="goHome()">ホームに戻る</button>
@@ -3096,6 +3186,7 @@ const LV_LABEL={0:"すべて",1:"〜600",2:"〜730",3:"860+"};
 const MODE_LABEL={vocab:"単語",grammar:"文法",idiom:"熟語・コロケーション",mix:"ミックス",review:"復習"};
 const PREP_SET=["to","on","in","for","with","of","at","from","about","into","by","over"];
 const STORE_KEY="toeicStudyStats.v1";
+const GAMIFY_KEY="toeicGamify.v1";
 
 let curLevel=0;
 let curMode=null;
@@ -3106,12 +3197,33 @@ let answered=false;
 let curQ=null;          // 現在の問題 {qid,type,genre,lv,text,choices,answer,exp,ex}
 
 let stats=loadStats();  // {qid:{c:回数,w:回数,last:"c"|"w"}}
+let gamify=loadGamify(); // {xp,streakDays,lastStudyDate,bestCombo,badges,challengeMode}
+
+/* チャレンジモード（ハート制）のセッション状態 */
+const MAX_HEARTS=5;
+let hearts=MAX_HEARTS;
+let inChallenge=false;
+let sessionMaxCombo=0;
+let noMissSoFar=true;
+let pendingGameOver=false;
 
 function loadStats(){
   try{ return JSON.parse(localStorage.getItem(STORE_KEY))||{}; }catch(e){ return {}; }
 }
 function saveStats(){
   try{ localStorage.setItem(STORE_KEY,JSON.stringify(stats)); }catch(e){}
+}
+function loadGamify(){
+  try{
+    const g=JSON.parse(localStorage.getItem(GAMIFY_KEY))||{};
+    return {xp:g.xp||0, streakDays:g.streakDays||0, lastStudyDate:g.lastStudyDate||null,
+      bestCombo:g.bestCombo||0, badges:g.badges||[], challengeMode:!!g.challengeMode};
+  }catch(e){
+    return {xp:0, streakDays:0, lastStudyDate:null, bestCombo:0, badges:[], challengeMode:false};
+  }
+}
+function saveGamify(){
+  try{ localStorage.setItem(GAMIFY_KEY,JSON.stringify(gamify)); }catch(e){}
 }
 
 /* ================= ユーティリティ ================= */
@@ -3136,6 +3248,129 @@ function toast(msg){
   toastTimer=setTimeout(()=>t.classList.remove("show"),2600);
 }
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ================= ゲーミフィケーション ================= */
+const TITLES=[
+  {min:1,  t:"見習い学習者"},
+  {min:5,  t:"単語ハンター"},
+  {min:10, t:"TOEICチャレンジャー"},
+  {min:15, t:"スコアビルダー"},
+  {min:20, t:"エキスパート"},
+  {min:30, t:"マスター"},
+  {min:40, t:"TOEICレジェンド"}
+];
+function titleForLevel(lv){
+  let t=TITLES[0].t;
+  TITLES.forEach(x=>{ if(lv>=x.min) t=x.t; });
+  return t;
+}
+/* レベルNに到達するまでの累積必要XP = 50*(1+2+...+(N-1)) */
+function levelFromXp(xp){
+  let lv=1, need=0;
+  while(true){
+    const reqForNext=need+50*lv;
+    if(xp<reqForNext) break;
+    need=reqForNext; lv++;
+  }
+  return {level:lv, cur:xp-need, next:50*lv};
+}
+function xpForAnswer(lv,comboAfter){
+  const base=lv===3?14:lv===2?10:8;
+  const comboBonus=Math.min(comboAfter,10);
+  return base+comboBonus;
+}
+function awardXp(amount){
+  gamify.xp+=amount;
+  saveGamify();
+}
+function touchDailyStreak(){
+  const today=new Date().toISOString().slice(0,10);
+  if(gamify.lastStudyDate===today) return;
+  const y=new Date(); y.setDate(y.getDate()-1);
+  const yStr=y.toISOString().slice(0,10);
+  gamify.streakDays=(gamify.lastStudyDate===yStr)?gamify.streakDays+1:1;
+  gamify.lastStudyDate=today;
+  saveGamify();
+}
+function renderGamifyBar(){
+  const {level,cur,next}=levelFromXp(gamify.xp);
+  document.getElementById("gmLevel").textContent="Lv."+level;
+  document.getElementById("gmTitle").textContent=titleForLevel(level);
+  document.getElementById("gmXpFill").style.width=Math.round(cur/next*100)+"%";
+  document.getElementById("gmXpText").textContent=cur+" / "+next+" XP";
+  document.getElementById("gmStreak").textContent="🔥 "+gamify.streakDays+"日連続";
+}
+
+/* ---- 実績バッジ ---- */
+const ACHIEVEMENTS=[
+  {id:"first_step", icon:"🌱", name:"はじめの一歩", desc:"1問に回答する",
+    check:c=>c.totalAnswered>=1},
+  {id:"correct_100", icon:"📗", name:"100問正解", desc:"累計100問正解",
+    check:c=>c.totalCorrect>=100},
+  {id:"correct_500", icon:"📘", name:"500問正解", desc:"累計500問正解",
+    check:c=>c.totalCorrect>=500},
+  {id:"correct_1000", icon:"📙", name:"1000問正解", desc:"累計1000問正解",
+    check:c=>c.totalCorrect>=1000},
+  {id:"correct_3000", icon:"📕", name:"3000問正解", desc:"累計3000問正解",
+    check:c=>c.totalCorrect>=3000},
+  {id:"combo_10", icon:"⚡", name:"10連続正解", desc:"1セッションで10問連続正解",
+    check:c=>c.bestCombo>=10},
+  {id:"combo_20", icon:"🔥", name:"20連続正解", desc:"1セッションで20問連続正解",
+    check:c=>c.bestCombo>=20},
+  {id:"streak_3", icon:"📅", name:"3日連続", desc:"3日連続で学習する",
+    check:c=>c.streakDays>=3},
+  {id:"streak_7", icon:"🗓️", name:"1週間皆勤", desc:"7日連続で学習する",
+    check:c=>c.streakDays>=7},
+  {id:"streak_30", icon:"🏆", name:"1ヶ月皆勤", desc:"30日連続で学習する",
+    check:c=>c.streakDays>=30},
+  {id:"all_genre", icon:"🎯", name:"ジャンル制覇", desc:"単語・文法・熟語すべてで正解する",
+    check:c=>c.genres.has("単語")&&c.genres.has("文法")&&c.genres.has("熟語")},
+  {id:"no_miss_clear", icon:"💎", name:"ノーミスクリア", desc:"チャレンジモードをハート満タンでクリア",
+    check:c=>c.noMissClear},
+  {id:"level_10", icon:"⭐", name:"レベル10到達", desc:"プレイヤーレベル10に到達",
+    check:c=>c.level>=10},
+  {id:"level_20", icon:"🌟", name:"レベル20到達", desc:"プレイヤーレベル20に到達",
+    check:c=>c.level>=20}
+];
+function achievementContext(extra){
+  let totalCorrect=0, totalAnswered=0;
+  const genres=new Set();
+  Object.entries(stats).forEach(([qid,s])=>{
+    totalCorrect+=s.c; totalAnswered+=s.c+s.w;
+    if(s.c>0) genres.add(genreOfQid(qid));
+  });
+  const {level}=levelFromXp(gamify.xp);
+  return Object.assign({totalCorrect, totalAnswered, genres, level,
+    bestCombo:gamify.bestCombo, streakDays:gamify.streakDays, noMissClear:false}, extra||{});
+}
+function checkAchievements(extra){
+  const ctx=achievementContext(extra);
+  let unlocked=false;
+  ACHIEVEMENTS.forEach(a=>{
+    if(gamify.badges.includes(a.id)) return;
+    if(a.check(ctx)){
+      gamify.badges.push(a.id);
+      unlocked=true;
+      toast("🏅 実績解除: "+a.name);
+    }
+  });
+  if(unlocked) saveGamify();
+}
+
+/* ---- ハート表示 ---- */
+function renderHearts(justBroke){
+  const box=document.getElementById("quizHearts");
+  if(!box) return;
+  if(!inChallenge){ box.style.display="none"; box.innerHTML=""; return; }
+  box.style.display="flex";
+  let html="";
+  for(let k=0;k<MAX_HEARTS;k++){
+    const filled=k<hearts;
+    const brk=justBroke&&k===hearts;
+    html+='<span class="heart'+(filled?"":" empty")+(brk?" brk":"")+'">'+(filled?"♥":"♡")+'</span>';
+  }
+  box.innerHTML=html;
+}
 
 /* ================= 出題プール構築 =================
    descriptor: {kind:"vocab"|"colloc"|"idiom"|"grammar", i:配列index} */
@@ -3261,7 +3496,12 @@ function show(id){
   document.getElementById(id).classList.add("active");
   window.scrollTo(0,0);
 }
-function goHome(){ curMode=null; renderHome(); show("scr-home"); }
+function goHome(){
+  if(inChallenge&&noMissSoFar&&sessionTotal>=15){
+    checkAchievements({noMissClear:true});
+  }
+  inChallenge=false; curMode=null; renderHome(); show("scr-home");
+}
 function showStats(){ renderStats(); show("scr-stats"); }
 
 /* ================= ホーム ================= */
@@ -3286,6 +3526,9 @@ function renderHome(){
   document.getElementById("bankNote").textContent=
     "収録数: 単語 "+WORDS.length+"語 / 文法 "+GRAMMAR.length+"問 / 熟語 "+IDIOMS.length
     +" / コロケーション "+WORDS.filter(w=>w.pr).length;
+
+  renderGamifyBar();
+  document.getElementById("challengeToggle").checked=gamify.challengeMode;
 }
 
 /* ================= クイズ ================= */
@@ -3299,12 +3542,30 @@ function startMode(mode){
   curMode=mode;
   pool=shuffle(d); poolIdx=0;
   sessionOK=0; sessionTotal=0; streak=0;
+  inChallenge=gamify.challengeMode;
+  hearts=MAX_HEARTS; sessionMaxCombo=0; noMissSoFar=true; pendingGameOver=false;
   document.getElementById("quizModeChip").textContent=
     MODE_LABEL[mode]+(curLevel?"・"+LV_LABEL[curLevel]:"");
+  document.getElementById("nextBtn").textContent="次の問題へ";
+  renderHearts();
   show("scr-quiz");
   nextQuestion();
 }
+function retryChallenge(){
+  if(curMode) startMode(curMode);
+  else goHome();
+}
+function showGameOver(){
+  const acc=sessionTotal?Math.round(sessionOK/sessionTotal*100):0;
+  document.getElementById("goStats").innerHTML=
+    "<div class='go-stat'><div class='n'>"+sessionOK+"/"+sessionTotal+"</div><div class='l'>正解数</div></div>"
+    +"<div class='go-stat'><div class='n'>"+acc+"%</div><div class='l'>正答率</div></div>"
+    +"<div class='go-stat'><div class='n'>"+sessionMaxCombo+"</div><div class='l'>最大コンボ</div></div>"
+    +"<div class='go-stat'><div class='n'>Lv."+levelFromXp(gamify.xp).level+"</div><div class='l'>現在のレベル</div></div>";
+  show("scr-gameover");
+}
 function nextQuestion(){
+  if(pendingGameOver){ pendingGameOver=false; showGameOver(); return; }
   if(curMode==="review"){
     /* 復習は毎回プールを再計算（正解した問題を除外していく） */
     const d=buildDescriptors("review");
@@ -3345,10 +3606,26 @@ function answer(i){
     else if(k===i&&!ok) b.classList.add("wrong");
   });
   sessionTotal++;
-  if(ok){sessionOK++; streak++;}else{streak=0;}
+  if(ok){
+    sessionOK++; streak++;
+    sessionMaxCombo=Math.max(sessionMaxCombo,streak);
+    if(streak>gamify.bestCombo) gamify.bestCombo=streak;
+    awardXp(xpForAnswer(curQ.lv,streak));
+  }else{
+    streak=0;
+    if(inChallenge){
+      hearts=Math.max(0,hearts-1);
+      noMissSoFar=false;
+      if(hearts===0) pendingGameOver=true;
+    }
+  }
   const s=stats[curQ.qid]||{c:0,w:0,last:null};
   if(ok){s.c++; s.last="c";}else{s.w++; s.last="w";}
   stats[curQ.qid]=s; saveStats();
+  touchDailyStreak();
+  checkAchievements();
+  renderHearts(!ok&&inChallenge);
+  if(pendingGameOver) document.getElementById("nextBtn").textContent="結果を見る";
 
   const fb=document.getElementById("feedback");
   fb.className="feedback show "+(ok?"ok":"ng");
@@ -3377,7 +3654,11 @@ function answer(i){
 function updateQuizTop(){
   document.getElementById("quizScore").textContent=sessionOK+"/"+sessionTotal
     +(sessionTotal?"（"+Math.round(sessionOK/sessionTotal*100)+"%）":"");
-  document.getElementById("quizStreak").textContent=streak>=2?"🔥"+streak+"連続":"";
+  const streakEl=document.getElementById("quizStreak");
+  streakEl.textContent=streak>=2?"🔥"+streak+"連続":"";
+  streakEl.classList.remove("combo-mid","combo-hot");
+  if(streak>=10) streakEl.classList.add("combo-hot");
+  else if(streak>=5) streakEl.classList.add("combo-mid");
 }
 
 /* ================= 統計 ================= */
@@ -3437,6 +3718,13 @@ function renderStats(){
         +esc(lab.w)+"</span><br><span class='m'>"+esc(lab.m)+"</span></div>";
     }).join("");
   }
+
+  const bg=document.getElementById("badgeGrid");
+  bg.innerHTML=ACHIEVEMENTS.map(a=>{
+    const on=gamify.badges.includes(a.id);
+    return "<div class='badge-item"+(on?" unlocked":"")+"'><div class='bi-icon'>"+a.icon+"</div>"
+      +"<div class='bi-name'>"+esc(a.name)+"</div><div class='bi-desc'>"+esc(a.desc)+"</div></div>";
+  }).join("");
 }
 function resetStats(){
   if(confirm("学習記録（正答率・復習リスト）をすべて削除します。よろしいですか？")){
@@ -3454,6 +3742,10 @@ document.getElementById("levelSeg").addEventListener("click",e=>{
 });
 document.querySelectorAll(".mode-btn").forEach(b=>{
   b.addEventListener("click",()=>startMode(b.dataset.mode));
+});
+document.getElementById("challengeToggle").addEventListener("change",e=>{
+  gamify.challengeMode=e.target.checked;
+  saveGamify();
 });
 document.addEventListener("keydown",e=>{
   if(!document.getElementById("scr-quiz").classList.contains("active")) return;
