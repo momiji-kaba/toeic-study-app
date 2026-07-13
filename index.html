@@ -6,61 +6,77 @@
 <title>TOEIC英語学習アプリ</title>
 <style>
   :root{
-    --bg:#F3F7FB; --card:#ffffff; --text:#2B3648; --sub:#71829B;
-    --accent:#4E93D1; --accent-light:#DCEBF9; --accent-dark:#2F6FA8;
-    --warm:#E9975A; --warm-light:#FBE7D2; --warm-ink:#8A5326;
-    --ok:#4E9C79; --ok-bg:#E7F3EC; --ng:#DD6B62; --ng-bg:#FBE4E1;
-    --border:#E4EBF4; --shadow:0 3px 12px rgba(66,108,150,.10);
-    --radius:14px;
+    --bg:#0B0F1E; --bg2:#111832; --card:#151C33; --card2:#1B2440; --text:#EEF1FC; --sub:#8B93B8;
+    --accent:#7C7CFA; --accent-light:rgba(124,124,250,.16); --accent-dark:#5B57E0;
+    --accent2:#22D3EE;
+    --warm:#F5A623; --warm-light:rgba(245,166,35,.16); --warm-ink:#FBBF6B;
+    --ok:#34D399; --ok-bg:rgba(52,211,153,.14); --ng:#FB7185; --ng-bg:rgba(251,113,133,.14);
+    --border:rgba(255,255,255,.08); --shadow:0 10px 28px rgba(0,0,0,.38);
+    --glow:0 0 0 1px rgba(124,124,250,.4), 0 8px 24px rgba(124,124,250,.28);
+    --radius:16px;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   body{font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
-    background:var(--bg); color:var(--text); min-height:100vh; line-height:1.6;}
+    background:
+      radial-gradient(760px 380px at 15% -8%, rgba(124,124,250,.20), transparent 60%),
+      radial-gradient(700px 360px at 110% 10%, rgba(34,211,238,.14), transparent 60%),
+      var(--bg);
+    background-attachment:fixed;
+    color:var(--text); min-height:100vh; line-height:1.6;}
   .wrap{max-width:640px; margin:0 auto; padding:16px 16px 48px;}
   header.app{position:relative; overflow:hidden; color:#fff;
-    background:linear-gradient(150deg,#4E93D1 0%,#7DB8E4 55%,#E9A96B 140%);
-    padding:24px 16px 26px; text-align:center;}
+    background:linear-gradient(150deg,#232C55 0%,#3A2E6E 55%,#1B2440 140%);
+    padding:30px 16px 32px; text-align:center; border-bottom:1px solid rgba(255,255,255,.06);}
   header.app::before{content:""; position:absolute; top:-70%; right:-8%;
-    width:220px; height:220px; border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,.32), transparent 70%);}
-  header.app::after{content:""; position:absolute; left:-10%; bottom:-80%;
-    width:240px; height:240px; border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,.16), transparent 70%);}
+    width:260px; height:260px; border-radius:50%;
+    background:radial-gradient(circle, rgba(124,124,250,.45), transparent 70%); filter:blur(2px);}
+  header.app::after{content:""; position:absolute; left:-10%; bottom:-90%;
+    width:260px; height:260px; border-radius:50%;
+    background:radial-gradient(circle, rgba(34,211,238,.30), transparent 70%); filter:blur(2px);}
   header.app h1{position:relative; font-family:"Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
-    font-size:1.3rem; letter-spacing:.05em;}
-  header.app p{position:relative; font-size:.8rem; opacity:.92; margin-top:2px;}
+    font-size:1.4rem; font-weight:800; letter-spacing:.05em;
+    background:linear-gradient(90deg,#fff,#C9CBFF); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  header.app p{position:relative; font-size:.8rem; color:#B9C0EA; margin-top:4px;}
   .screen{display:none;}
   .screen.active{display:block; animation:fade .25s ease;}
   @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
 
   /* ---- home ---- */
-  .section-label{font-size:.8rem; font-weight:700; color:var(--sub); margin:22px 4px 8px; letter-spacing:.08em;}
-  .level-seg{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; background:var(--accent-light);
-    border-radius:var(--radius); padding:6px;}
+  .section-label{font-size:.75rem; font-weight:700; color:var(--sub); margin:26px 4px 10px; letter-spacing:.12em; text-transform:uppercase;}
+  .level-seg{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; background:var(--card);
+    border:1px solid var(--border); border-radius:var(--radius); padding:6px;}
   .level-seg button{border:none; background:transparent; padding:10px 4px; border-radius:10px;
-    font-size:.85rem; font-weight:700; color:var(--accent-dark); cursor:pointer; font-family:inherit;}
-  .level-seg button.sel{background:var(--accent); color:#fff; box-shadow:var(--shadow);}
+    font-size:.85rem; font-weight:700; color:var(--sub); cursor:pointer; font-family:inherit; transition:color .15s;}
+  .level-seg button.sel{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; box-shadow:var(--glow);}
   .modes{display:grid; gap:10px;}
   .mode-btn{display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--border);
     border-radius:var(--radius); padding:16px; cursor:pointer; box-shadow:var(--shadow);
-    font-family:inherit; text-align:left; width:100%; transition:transform .06s ease;}
-  .mode-btn:active{transform:scale(.985);}
+    font-family:inherit; text-align:left; width:100%; transition:transform .12s ease, border-color .12s ease, box-shadow .12s ease;}
+  .mode-btn:hover{border-color:rgba(124,124,250,.45); transform:translateY(-2px); box-shadow:0 14px 30px rgba(0,0,0,.42);}
+  .mode-btn:active{transform:scale(.985) translateY(0);}
   .mode-btn .icon{width:48px; height:48px; display:flex; align-items:center;
     justify-content:center; background:var(--accent-light); border-radius:12px; flex-shrink:0;}
-  .mode-btn .icon svg{width:23px; height:23px; color:var(--accent-dark);}
-  .mode-btn .t{font-weight:700; font-size:1rem;}
+  .mode-btn .icon svg{width:23px; height:23px; color:var(--accent);}
+  .mode-btn .t{font-weight:700; font-size:1rem; color:var(--text);}
   .mode-btn .d{font-size:.78rem; color:var(--sub); margin-top:1px;}
+  .mode-btn[data-mode="grammar"] .icon{background:rgba(244,114,182,.16);}
+  .mode-btn[data-mode="grammar"] .icon svg{color:#F472B6;}
+  .mode-btn[data-mode="idiom"] .icon{background:rgba(45,212,191,.16);}
+  .mode-btn[data-mode="idiom"] .icon svg{color:#2DD4BF;}
+  .mode-btn[data-mode="mix"] .icon{background:rgba(251,146,60,.16);}
+  .mode-btn[data-mode="mix"] .icon svg{color:#FB923C;}
   .mode-btn.review .icon{background:var(--warm-light);}
   .mode-btn.review .icon svg{color:var(--warm-ink);}
-  .mode-btn.disabled{opacity:.45; pointer-events:none;}
-  .badge{margin-left:auto; background:var(--accent-light); color:var(--accent-dark);
+  .mode-btn.disabled{opacity:.4; pointer-events:none;}
+  .badge{margin-left:auto; background:var(--accent-light); color:var(--accent);
     font-size:.75rem; font-weight:700; padding:3px 10px; border-radius:99px; flex-shrink:0;}
   .mode-btn.review .badge{background:var(--warm-light); color:var(--warm-ink);}
   .summary{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
   .sum-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
     padding:14px 8px; text-align:center; box-shadow:var(--shadow);}
   .sum-card .num{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
-    font-size:1.35rem; font-weight:800; color:var(--accent);}
+    font-size:1.4rem; font-weight:800; background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;}
   .sum-card .lab{font-size:.72rem; color:var(--sub);}
   .link-row{display:flex; justify-content:center; gap:18px; margin-top:20px;}
   .text-link{background:none; border:none; color:var(--accent); font-size:.85rem; cursor:pointer;
@@ -70,7 +86,7 @@
 
   /* ---- quiz ---- */
   .quiz-top{display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
-  .quiz-top .mode-chip{background:var(--accent); color:#fff; font-size:.75rem; font-weight:700;
+  .quiz-top .mode-chip{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-size:.75rem; font-weight:700;
     padding:4px 12px; border-radius:99px;}
   .quiz-top .score{font-size:.85rem; color:var(--sub); font-weight:600;}
   .quiz-top .streak{font-size:.85rem; color:var(--warm-ink); font-weight:700;}
@@ -78,35 +94,35 @@
     border-radius:10px; padding:6px 14px; font-size:.8rem; cursor:pointer; font-family:inherit; color:var(--sub);}
   .q-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
     padding:22px 18px; box-shadow:var(--shadow); margin-bottom:14px;}
-  .q-genre{display:inline-block; font-size:.72rem; font-weight:700; color:var(--accent-dark);
+  .q-genre{display:inline-block; font-size:.72rem; font-weight:700; color:var(--accent);
     background:var(--accent-light); padding:2px 10px; border-radius:99px; margin-bottom:10px;}
   .q-genre .lvtag{opacity:.7; font-weight:600;}
-  .q-text{font-size:1.15rem; font-weight:700; line-height:1.55; overflow-wrap:break-word;}
+  .q-text{font-size:1.15rem; font-weight:700; line-height:1.55; overflow-wrap:break-word; color:var(--text);}
   .q-text .big{font-size:1.6rem; letter-spacing:.02em;}
   .choices{display:grid; gap:9px;}
   .choice{background:var(--card); border:1.5px solid var(--border); border-radius:12px;
-    padding:13px 14px; font-size:.98rem; text-align:left; cursor:pointer; font-family:inherit;
-    display:flex; align-items:center; gap:10px; transition:border-color .1s;}
+    padding:13px 14px; font-size:.98rem; text-align:left; cursor:pointer; font-family:inherit; color:var(--text);
+    display:flex; align-items:center; gap:10px; transition:border-color .12s, transform .12s;}
   .choice .key{font-size:.72rem; font-weight:700; color:var(--sub); border:1px solid var(--border);
     border-radius:6px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
-  .choice:not(.locked):hover{border-color:var(--accent);}
+  .choice:not(.locked):hover{border-color:var(--accent); transform:translateX(2px);}
   .choice.correct{background:var(--ok-bg); border-color:var(--ok); font-weight:700;}
   .choice.wrong{background:var(--ng-bg); border-color:var(--ng);}
   .choice.locked{cursor:default;}
   .feedback{border-radius:var(--radius); padding:14px 16px; margin-top:14px; display:none;}
   .feedback.show{display:block; animation:fade .2s ease;}
-  .feedback.ok{background:var(--ok-bg); border:1px solid #C9E4D4;}
-  .feedback.ng{background:var(--ng-bg); border:1px solid #F2CFC8;}
+  .feedback.ok{background:var(--ok-bg); border:1px solid rgba(52,211,153,.35);}
+  .feedback.ng{background:var(--ng-bg); border:1px solid rgba(251,113,133,.35);}
   .feedback .verdict{font-weight:800; font-size:1rem;}
   .feedback.ok .verdict{color:var(--ok);}
   .feedback.ng .verdict{color:var(--ng);}
-  .feedback .exp{font-size:.88rem; margin-top:6px;}
+  .feedback .exp{font-size:.88rem; margin-top:6px; color:var(--text);}
   .feedback .ex-sent{font-size:.85rem; color:var(--sub); margin-top:6px; font-style:italic;}
   .feedback .gloss{margin-top:12px; display:none; flex-direction:column; gap:5px;}
   .feedback .gloss.show{display:flex;}
   .feedback .gloss .gl-head{font-size:.74rem; font-weight:700; color:var(--sub); letter-spacing:.04em; margin-bottom:1px;}
   .gl-item{display:flex; align-items:baseline; gap:8px; background:var(--card); border:1px solid var(--border);
-    border-radius:9px; padding:7px 10px; font-size:.85rem;}
+    border-radius:9px; padding:7px 10px; font-size:.85rem; color:var(--text);}
   .gl-item .gl-en{font-weight:700; flex-shrink:0;}
   .gl-item .gl-ja{color:var(--sub);}
   .gl-item .gl-mark{margin-left:auto; font-size:.72rem; font-weight:700; flex-shrink:0;}
@@ -117,9 +133,9 @@
   .gl-item.g-ng .gl-mark{color:var(--ng);}
   .next-row{margin-top:14px; display:none;}
   .next-row.show{display:block;}
-  .next-btn{width:100%; background:var(--accent); color:#fff; border:none; border-radius:12px;
-    padding:14px; font-size:1rem; font-weight:700; cursor:pointer; font-family:inherit;}
-  .next-btn:active{background:var(--accent-dark);}
+  .next-btn{width:100%; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; border-radius:12px;
+    padding:14px; font-size:1rem; font-weight:700; cursor:pointer; font-family:inherit; box-shadow:var(--glow); transition:transform .1s;}
+  .next-btn:active{transform:scale(.98); filter:brightness(.95);}
   .kbd-hint{text-align:center; font-size:.72rem; color:var(--sub); margin-top:10px;}
 
   /* ---- stats ---- */
@@ -127,24 +143,25 @@
     padding:16px; box-shadow:var(--shadow); margin-bottom:14px;}
   .stats-block h3{font-size:.9rem; margin-bottom:10px; color:var(--text);}
   table.st{width:100%; border-collapse:collapse; font-size:.85rem;}
-  table.st th,table.st td{padding:7px 6px; text-align:left; border-bottom:1px solid var(--border);}
+  table.st th,table.st td{padding:7px 6px; text-align:left; border-bottom:1px solid var(--border); color:var(--text);}
   table.st th{color:var(--sub); font-size:.75rem; font-weight:600;}
   table.st td.r,table.st th.r{text-align:right;}
-  .bar{height:8px; background:var(--border); border-radius:99px; overflow:hidden; margin-top:3px;}
-  .bar i{display:block; height:100%; background:var(--accent); border-radius:99px;}
-  .wrong-item{padding:9px 2px; border-bottom:1px solid var(--border); font-size:.88rem;}
+  .bar{height:8px; background:rgba(255,255,255,.08); border-radius:99px; overflow:hidden; margin-top:3px;}
+  .bar i{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:99px;}
+  .wrong-item{padding:9px 2px; border-bottom:1px solid var(--border); font-size:.88rem; color:var(--text);}
   .wrong-item:last-child{border-bottom:none;}
   .wrong-item .w{font-weight:700;}
   .wrong-item .m{color:var(--sub); font-size:.8rem;}
   .wrong-item .cnt{float:right; color:var(--ng); font-size:.78rem; font-weight:700;}
   .back-btn{width:100%; background:var(--card); color:var(--accent); border:1.5px solid var(--accent);
-    border-radius:12px; padding:13px; font-size:.95rem; font-weight:700; cursor:pointer; font-family:inherit; margin-top:6px;}
+    border-radius:12px; padding:13px; font-size:.95rem; font-weight:700; cursor:pointer; font-family:inherit; margin-top:6px; transition:background .12s;}
+  .back-btn:hover{background:var(--accent-light);}
   .empty-note{color:var(--sub); font-size:.85rem; text-align:center; padding:12px 0;}
 
   #toast{position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px);
-    background:#2a3350; color:#fff; padding:12px 22px; border-radius:99px; font-size:.9rem;
+    background:#1B2440; color:#fff; padding:12px 22px; border-radius:99px; font-size:.9rem;
     font-weight:600; opacity:0; pointer-events:none; transition:all .25s ease; z-index:99;
-    box-shadow:0 6px 20px rgba(20,30,60,.35); max-width:90vw; text-align:center;}
+    box-shadow:0 8px 24px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08); max-width:90vw; text-align:center;}
   #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
   @media (max-width:400px){
     .q-text{font-size:1.05rem;}
@@ -2707,6 +2724,367 @@ WORDS.push(
 {w:"list",m:"一覧",p:"名",lv:1,pr:"of",ex:"A list of winners is posted."},
 {w:"literacy",m:"読み書き能力",p:"名",lv:3,ex:"Digital literacy is essential now."},
 {w:"luxury",m:"ぜいたく（品）",p:"名",lv:2,ex:"The hotel offers luxury suites."}
+);
+</script>
+
+<script>
+/* ==== 単語バッチ V10: ビジネス上級動詞 (lv2-3) ==== */
+WORDS.push(
+{w:"customize",m:"特注で作る",p:"動",lv:3,ex:"You can customize the software settings."},
+{w:"differentiate",m:"区別する",p:"動",lv:3,pr:"from",ex:"Good design differentiates us from rivals."},
+{w:"diversify",m:"多様化する",p:"動",lv:3,ex:"The company diversified its product line."},
+{w:"downsize",m:"縮小する",p:"動",lv:3,ex:"The firm downsized its overseas offices."},
+{w:"leverage",m:"活用する",p:"動",lv:3,ex:"We leverage data to improve service."},
+{w:"mediate",m:"仲裁する",p:"動",lv:3,ex:"A lawyer mediated the dispute."},
+{w:"orchestrate",m:"組織する・画策する",p:"動",lv:3,ex:"She orchestrated the product launch."},
+{w:"prioritize",m:"優先させる",p:"動",lv:3,ex:"Prioritize tasks by deadline."},
+{w:"reinstate",m:"復職させる・復活させる",p:"動",lv:3,ex:"The worker was reinstated after review."},
+{w:"safeguard",m:"保護する",p:"動",lv:3,ex:"Encryption safeguards your data."},
+{w:"stabilize",m:"安定させる",p:"動",lv:3,ex:"Prices have finally stabilized."},
+{w:"standardize",m:"標準化する",p:"動",lv:3,ex:"Forms were standardized across branches."},
+{w:"transcribe",m:"書き起こす",p:"動",lv:3,ex:"The interview was transcribed in full."},
+{w:"undertake",m:"引き受ける・着手する",p:"動",lv:3,ex:"The firm undertook a major survey."}
+);
+/* ==== 単語バッチ V11: ビジネス上級名詞 (lv2-3) ==== */
+WORDS.push(
+{w:"adjournment",m:"休会・延期",p:"名",lv:3,ex:"The chair announced an adjournment."},
+{w:"affiliation",m:"提携・所属",p:"名",lv:3,ex:"List your university affiliation."},
+{w:"aggregate",m:"総計",p:"名",lv:3,ex:"The aggregate of sales rose sharply."},
+{w:"ambiguity",m:"曖昧さ",p:"名",lv:3,ex:"Remove ambiguity from the contract."},
+{w:"apprentice",m:"見習い",p:"名",lv:3,ex:"He started as an apprentice carpenter."},
+{w:"arbitration",m:"仲裁",p:"名",lv:3,ex:"The dispute went to arbitration."},
+{w:"beneficiary",m:"受益者",p:"名",lv:3,ex:"Name a beneficiary for the policy."},
+{w:"bidding",m:"入札",p:"名",lv:3,ex:"Bidding for the contract opens Monday."},
+{w:"bureaucracy",m:"官僚制度・煩雑な手続き",p:"名",lv:3,ex:"Bureaucracy slowed the approval."},
+{w:"caliber",m:"力量・品質",p:"名",lv:3,ex:"We hire staff of the highest caliber."},
+{w:"collateral",m:"担保",p:"名",lv:3,ex:"The loan requires collateral."},
+{w:"consortium",m:"共同事業体",p:"名",lv:3,ex:"A consortium won the rail contract."},
+{w:"constraint",m:"制約",p:"名",lv:3,pr:"on",ex:"Budget constraints limited the design."},
+{w:"credential",m:"資格・信用証明",p:"名",lv:3,ex:"Submit your credentials with the form."},
+{w:"criterion",m:"基準",p:"名",lv:3,pr:"for",ex:"Price is one criterion for selection."},
+{w:"culmination",m:"集大成・頂点",p:"名",lv:3,ex:"The award was the culmination of years of work."},
+{w:"custody",m:"保管・管理",p:"名",lv:3,ex:"The documents are in safe custody."},
+{w:"depreciation",m:"減価償却・価値低下",p:"名",lv:3,ex:"Depreciation reduced the asset's value."},
+{w:"disbursement",m:"支出・支払い",p:"名",lv:3,ex:"Disbursements are recorded monthly."},
+{w:"discrepancy",m:"不一致",p:"名",lv:3,pr:"between",ex:"There is a discrepancy between the totals."},
+{w:"disposition",m:"性質・配置",p:"名",lv:3,ex:"She has a cheerful disposition."},
+{w:"friction",m:"摩擦・不和",p:"名",lv:3,pr:"between",ex:"Friction arose between the two teams."},
+{w:"hierarchy",m:"階層",p:"名",lv:3,ex:"The firm has a flat hierarchy."},
+{w:"inception",m:"開始・発足",p:"名",lv:3,ex:"Since its inception, the club has grown."},
+{w:"influx",m:"流入・到来",p:"名",lv:3,pr:"of",ex:"The influx of tourists boosted sales."},
+{w:"intake",m:"受け入れ数・摂取量",p:"名",lv:3,ex:"The school increased its student intake."},
+{w:"jurisdiction",m:"管轄権",p:"名",lv:3,pr:"over",ex:"The court has jurisdiction over the case."},
+{w:"litigation",m:"訴訟",p:"名",lv:3,ex:"The dispute ended in litigation."},
+{w:"memorandum",m:"覚書・社内文書",p:"名",lv:3,ex:"A memorandum was sent to all staff."},
+{w:"novice",m:"初心者",p:"名",lv:3,ex:"The class is designed for novices."},
+{w:"outreach",m:"支援活動・働きかけ",p:"名",lv:3,ex:"The library runs community outreach."},
+{w:"prerequisite",m:"前提条件",p:"名",lv:3,pr:"for",ex:"Experience is a prerequisite for the role."},
+{w:"redundancy",m:"余剰・重複",p:"名",lv:3,ex:"Backup systems provide redundancy."},
+{w:"remittance",m:"送金",p:"名",lv:3,ex:"Enclose your remittance with the form."},
+{w:"repository",m:"保管場所",p:"名",lv:3,ex:"The site is a repository of manuals."},
+{w:"shortfall",m:"不足",p:"名",lv:3,pr:"in",ex:"A shortfall in revenue forced cuts."},
+{w:"stipulation",m:"条件・規定",p:"名",lv:3,ex:"The lease has a no-pets stipulation."},
+{w:"trajectory",m:"軌道・進路",p:"名",lv:3,ex:"The startup is on a growth trajectory."},
+{w:"turnaround",m:"業績回復・所要時間",p:"名",lv:3,ex:"The repair has a two-day turnaround."},
+{w:"upturn",m:"上昇・好転",p:"名",lv:3,pr:"in",ex:"An upturn in bookings began in spring."},
+{w:"variance",m:"差異",p:"名",lv:3,pr:"from",ex:"Report any variance from the budget."},
+{w:"viability",m:"実行可能性",p:"名",lv:3,pr:"of",ex:"Assess the viability of the plan first."}
+);
+/* ==== 単語バッチ V12: 上級形容詞・副詞 (lv2-3) ==== */
+WORDS.push(
+{w:"adjacent",m:"隣接した",p:"形",lv:3,pr:"to",ex:"The cafe is adjacent to the bookstore."},
+{w:"adverse",m:"不利な・有害な",p:"形",lv:3,ex:"Adverse weather delayed the flight."},
+{w:"ample",m:"十分な",p:"形",lv:3,ex:"There is ample parking at the venue."},
+{w:"apparent",m:"明らかな",p:"形",lv:3,ex:"The cause of the delay is not apparent."},
+{w:"authentic",m:"本物の",p:"形",lv:3,ex:"The restaurant serves authentic Thai food."},
+{w:"cohesive",m:"結束した",p:"形",lv:3,ex:"They built a cohesive project team."},
+{w:"compatible",m:"互換性のある・相性が良い",p:"形",lv:3,pr:"with",ex:"The printer is compatible with all models."},
+{w:"competent",m:"有能な",p:"形",lv:3,ex:"She is a highly competent manager."},
+{w:"concise",m:"簡潔な",p:"形",lv:3,ex:"Keep your summary concise and clear."},
+{w:"consecutive",m:"連続した",p:"形",lv:3,ex:"Profits rose for five consecutive years."},
+{w:"contemporary",m:"現代の・同時代の",p:"形",lv:3,ex:"The gallery shows contemporary art."},
+{w:"credible",m:"信頼できる",p:"形",lv:3,ex:"The report cites credible sources."},
+{w:"cumulative",m:"累積の",p:"形",lv:3,ex:"The cumulative effect was significant."},
+{w:"discreet",m:"慎重な・口の堅い",p:"形",lv:3,ex:"Please be discreet about the merger."},
+{w:"distinct",m:"明確に異なる・独特の",p:"形",lv:3,pr:"from",ex:"The two brands remain distinct."},
+{w:"distinguished",m:"著名な",p:"形",lv:3,ex:"A distinguished professor gave the talk."},
+{w:"eloquent",m:"雄弁な",p:"形",lv:3,ex:"She gave an eloquent acceptance speech."},
+{w:"exempt",m:"免除された",p:"形",lv:3,pr:"from",ex:"Members are exempt from the fee."},
+{w:"exquisite",m:"非常に美しい・精巧な",p:"形",lv:3,ex:"The hotel has exquisite interior design."},
+{w:"feasible",m:"実現可能な",p:"形",lv:3,ex:"The plan is feasible within budget."},
+{w:"imminent",m:"差し迫った",p:"形",lv:3,ex:"An announcement is imminent."},
+{w:"impartial",m:"公平な",p:"形",lv:3,ex:"An impartial panel judged the entries."},
+{w:"imperative",m:"必須の",p:"形",lv:3,ex:"It is imperative that you reply today."},
+{w:"indispensable",m:"不可欠な",p:"形",lv:3,pr:"to",ex:"She is indispensable to the team."},
+{w:"integral",m:"不可欠な",p:"形",lv:3,pr:"to",ex:"Feedback is integral to improvement."},
+{w:"intact",m:"無傷の",p:"形",lv:3,ex:"The package arrived intact."},
+{w:"interim",m:"暫定の",p:"形",lv:3,ex:"An interim manager was appointed."},
+{w:"intricate",m:"複雑な・精巧な",p:"形",lv:3,ex:"The watch has an intricate design."},
+{w:"meticulous",m:"細心の注意を払う",p:"形",lv:3,pr:"about",ex:"He is meticulous about details."},
+{w:"negligible",m:"無視できるほどの",p:"形",lv:3,ex:"The cost difference is negligible."},
+{w:"pertinent",m:"関連する",p:"形",lv:3,pr:"to",ex:"Include all pertinent documents."},
+{w:"plausible",m:"もっともらしい",p:"形",lv:3,ex:"His explanation sounds plausible."},
+{w:"proficient",m:"熟達した",p:"形",lv:3,pr:"in",ex:"She is proficient in three languages."},
+{w:"provisional",m:"暫定的な",p:"形",lv:3,ex:"The schedule is still provisional."},
+{w:"redundant",m:"余分な・解雇された",p:"形",lv:3,ex:"Delete redundant files to save space."},
+{w:"renowned",m:"有名な",p:"形",lv:3,pr:"for",ex:"The region is renowned for its wine."},
+{w:"rigorous",m:"厳格な",p:"形",lv:3,ex:"Products pass rigorous quality tests."},
+{w:"robust",m:"頑丈な・力強い",p:"形",lv:3,ex:"Demand remained robust all year."},
+{w:"seasoned",m:"経験豊富な",p:"形",lv:3,ex:"A seasoned negotiator led the talks."},
+{w:"simultaneous",m:"同時の",p:"形",lv:3,ex:"Simultaneous interpretation is provided."},
+{w:"sluggish",m:"低迷した・のろい",p:"形",lv:3,ex:"Sales were sluggish in January."},
+{w:"sophisticated",m:"洗練された・高度な",p:"形",lv:3,ex:"The lab uses sophisticated equipment."},
+{w:"superb",m:"見事な",p:"形",lv:3,ex:"The chef prepared a superb dinner."},
+{w:"transparent",m:"透明な・わかりやすい",p:"形",lv:3,ex:"Pricing should be fully transparent."},
+{w:"unprecedented",m:"前例のない",p:"形",lv:3,ex:"The store saw unprecedented demand."},
+{w:"vigorous",m:"精力的な",p:"形",lv:3,ex:"A vigorous debate followed the talk."},
+{w:"abruptly",m:"突然に",p:"副",lv:3,ex:"The meeting ended abruptly."},
+{w:"adequately",m:"十分に",p:"副",lv:3,ex:"The room was adequately heated."},
+{w:"admittedly",m:"確かに・認めるが",p:"副",lv:3,ex:"Admittedly, the plan has risks."},
+{w:"allegedly",m:"申し立てによると",p:"副",lv:3,ex:"The funds were allegedly misused."},
+{w:"beforehand",m:"前もって",p:"副",lv:3,ex:"Please register beforehand."},
+{w:"chiefly",m:"主に",p:"副",lv:3,ex:"The audience was chiefly students."},
+{w:"collectively",m:"まとめて・共同で",p:"副",lv:3,ex:"The staff collectively raised $5,000."},
+{w:"conversely",m:"逆に",p:"副",lv:3,ex:"Conversely, costs fell as volume grew."},
+{w:"deliberately",m:"故意に・慎重に",p:"副",lv:3,ex:"He spoke slowly and deliberately."},
+{w:"drastically",m:"大幅に",p:"副",lv:3,ex:"Prices were drastically reduced."},
+{w:"exclusively",m:"独占的に・もっぱら",p:"副",lv:3,ex:"The lounge is exclusively for members."},
+{w:"explicitly",m:"明確に",p:"副",lv:3,ex:"The rules explicitly ban photography."},
+{w:"inadvertently",m:"うっかり",p:"副",lv:3,ex:"The file was inadvertently deleted."},
+{w:"indefinitely",m:"無期限に",p:"副",lv:3,ex:"The event was postponed indefinitely."},
+{w:"jointly",m:"共同で",p:"副",lv:3,ex:"The study was jointly funded."},
+{w:"markedly",m:"著しく",p:"副",lv:3,ex:"Quality improved markedly this year."},
+{w:"merely",m:"単に",p:"副",lv:3,ex:"It is merely a suggestion."},
+{w:"mutually",m:"相互に",p:"副",lv:3,ex:"They reached a mutually beneficial deal."},
+{w:"notably",m:"特に・著しく",p:"副",lv:3,ex:"Costs fell, notably in shipping."},
+{w:"presumably",m:"おそらく",p:"副",lv:3,ex:"Presumably the train was delayed."},
+{w:"seemingly",m:"一見したところ",p:"副",lv:3,ex:"A seemingly minor error caused delays."},
+{w:"solely",m:"単独で・もっぱら",p:"副",lv:3,ex:"He is solely responsible for sales."},
+{w:"subsequently",m:"その後",p:"副",lv:3,ex:"He subsequently joined our board."},
+{w:"substantially",m:"大幅に",p:"副",lv:3,ex:"Costs were substantially lower."},
+{w:"tentatively",m:"仮に・暫定的に",p:"副",lv:3,ex:"The launch is tentatively set for June."},
+{w:"unanimously",m:"満場一致で",p:"副",lv:3,ex:"The proposal passed unanimously."},
+{w:"virtually",m:"事実上・ほとんど",p:"副",lv:3,ex:"The two models are virtually identical."}
+);
+/* ==== 単語バッチ V13: 会議・交渉・報告 (lv1-3) ==== */
+WORDS.push(
+{w:"attendee",m:"出席者",p:"名",lv:2,ex:"Each attendee received a badge."},
+{w:"facilitator",m:"進行役",p:"名",lv:3,ex:"The facilitator kept the session on time."},
+{w:"rebuttal",m:"反論",p:"名",lv:3,ex:"She offered a brief rebuttal."},
+{w:"deadlock",m:"行き詰まり",p:"名",lv:3,ex:"Talks ended in deadlock."},
+{w:"briefing",m:"簡単な報告・説明会",p:"名",lv:3,pr:"on",ex:"A press briefing is set for noon."},
+{w:"debrief",m:"報告を聞く",p:"動",lv:3,ex:"The team was debriefed after the event."},
+{w:"recap",m:"要点をまとめる",p:"動",lv:3,ex:"Let me recap the main points."},
+{w:"adjourn",m:"休会にする",p:"動",lv:3,ex:"The meeting was adjourned at five."},
+{w:"chair",m:"議長を務める",p:"動",lv:3,ex:"He chaired the budget committee."},
+{w:"second",m:"(動議を)支持する",p:"動",lv:3,ex:"She seconded the motion."},
+{w:"motion",m:"動議",p:"名",lv:3,ex:"The motion passed by a narrow margin."},
+{w:"quorum",m:"定足数",p:"名",lv:3,ex:"We lack a quorum to vote today."},
+{w:"proxy",m:"代理人・委任状",p:"名",lv:3,ex:"You may vote by proxy."},
+{w:"show of hands",m:"挙手による採決",p:"名",lv:3,ex:"The vote was taken by a show of hands."},
+{w:"teleconference",m:"電話会議",p:"名",lv:3,ex:"The teleconference starts at 9 a.m."},
+{w:"breakout session",m:"分科会",p:"名",lv:3,ex:"Choose one breakout session to join."},
+{w:"plenary",m:"全体会議",p:"名",lv:3,ex:"The plenary begins after lunch."},
+{w:"deliberation",m:"審議・熟考",p:"名",lv:3,ex:"After long deliberation, they agreed."}
+);
+/* ==== 単語バッチ V14: 生活・移動・施設 (lv1-2) ==== */
+WORDS.push(
+{w:"lane",m:"車線・小道",p:"名",lv:2,ex:"The left lane is closed for repairs."},
+{w:"layover",m:"乗り継ぎの待ち時間",p:"名",lv:3,pr:"in",ex:"We have a two-hour layover in Seoul."},
+{w:"boarding pass",m:"搭乗券",p:"名",lv:1,ex:"Show your boarding pass at the gate."},
+{w:"carry-on",m:"機内持ち込み手荷物",p:"名",lv:2,ex:"One carry-on is allowed per passenger."},
+{w:"immigration",m:"入国審査・移民",p:"名",lv:2,ex:"The line at immigration was long."},
+{w:"jet lag",m:"時差ぼけ",p:"名",lv:2,ex:"He suffered from jet lag for days."},
+{w:"electrician",m:"電気技師",p:"名",lv:2,ex:"An electrician rewired the office."},
+{w:"furnishing",m:"家具・備品",p:"名",lv:3,ex:"The suite has elegant furnishings."},
+{w:"upholstery",m:"椅子張り・布張り",p:"名",lv:3,ex:"The sofa needs new upholstery."},
+{w:"cupboard",m:"食器棚",p:"名",lv:2,ex:"Cups are in the top cupboard."},
+{w:"faucet",m:"蛇口",p:"名",lv:2,ex:"The faucet in the break room drips."},
+{w:"trash bin",m:"ゴミ箱",p:"名",lv:1,ex:"Empty the trash bins every evening."},
+{w:"recyclable",m:"リサイクル可能な",p:"形",lv:2,ex:"Sort recyclable items separately."},
+{w:"groceries",m:"食料雑貨",p:"名",lv:1,ex:"He picked up groceries after work."},
+{w:"dairy",m:"乳製品",p:"名",lv:2,ex:"The dairy section is near the entrance."},
+{w:"condiment",m:"調味料",p:"名",lv:3,ex:"Condiments are on the counter."},
+{w:"entree",m:"主菜",p:"名",lv:3,ex:"The entree comes with a salad."},
+{w:"cutlery",m:"食卓用金物",p:"名",lv:3,ex:"The cutlery is in the drawer."},
+{w:"napkin",m:"ナプキン",p:"名",lv:1,ex:"Extra napkins are on the tray."},
+{w:"tray",m:"トレー・盆",p:"名",lv:1,ex:"Return your tray to the counter."},
+{w:"buffet",m:"ビュッフェ",p:"名",lv:2,ex:"Breakfast is served buffet style."},
+{w:"catering",m:"仕出し・ケータリング",p:"名",lv:2,pr:"for",ex:"We arranged catering for the seminar."},
+{w:"patio",m:"テラス・中庭",p:"名",lv:3,ex:"Lunch is served on the patio."},
+{w:"awning",m:"日よけ",p:"名",lv:3,ex:"The cafe has a striped awning."},
+{w:"railing",m:"手すり",p:"名",lv:3,ex:"Hold the railing on the stairs."},
+{w:"staircase",m:"階段",p:"名",lv:2,ex:"Take the staircase to the mezzanine."},
+{w:"escalator",m:"エスカレーター",p:"名",lv:1,ex:"The escalator is under repair."},
+{w:"gymnasium",m:"体育館",p:"名",lv:2,ex:"The fair is held in the gymnasium."},
+{w:"courtyard",m:"中庭",p:"名",lv:3,ex:"Tables are set up in the courtyard."},
+{w:"nursery",m:"苗木園・保育室",p:"名",lv:3,ex:"Buy seedlings at the plant nursery."},
+{w:"storefront",m:"店頭・店構え",p:"名",lv:3,ex:"The storefront was newly painted."},
+{w:"vending machine",m:"自動販売機",p:"名",lv:1,ex:"The vending machine is out of coffee."},
+{w:"aisle seat",m:"通路側の席",p:"名",lv:2,ex:"He requested an aisle seat."},
+{w:"loyalty program",m:"ポイント制度",p:"名",lv:2,ex:"Join our loyalty program for discounts."},
+{w:"markdown",m:"値下げ",p:"名",lv:3,pr:"on",ex:"Big markdowns on winter coats today."},
+{w:"parcel",m:"小包",p:"名",lv:2,ex:"A parcel arrived for you this morning."},
+{w:"crate",m:"木箱",p:"名",lv:3,ex:"The machines ship in wooden crates."},
+{w:"pallet",m:"パレット・荷台",p:"名",lv:3,ex:"Stack the boxes on the pallet."},
+{w:"forklift",m:"フォークリフト",p:"名",lv:3,ex:"A forklift moved the heavy crates."}
+);
+/* ==== 単語バッチ V15: 健康・医療・環境 (lv2-3) ==== */
+WORDS.push(
+{w:"surgeon",m:"外科医",p:"名",lv:3,ex:"The surgeon explained the procedure."},
+{w:"diagnosis",m:"診断",p:"名",lv:3,ex:"The diagnosis was confirmed by tests."},
+{w:"vaccination",m:"予防接種",p:"名",lv:3,pr:"against",ex:"Vaccination against flu is offered free."},
+{w:"ailment",m:"軽い病気",p:"名",lv:3,ex:"The clinic treats minor ailments."},
+{w:"metabolism",m:"代謝",p:"名",lv:3,ex:"Exercise boosts your metabolism."},
+{w:"posture",m:"姿勢",p:"名",lv:3,ex:"Good posture prevents back pain."},
+{w:"insomnia",m:"不眠症",p:"名",lv:3,ex:"Stress can cause insomnia."},
+{w:"sanitary",m:"衛生的な",p:"形",lv:3,ex:"Keep the kitchen sanitary at all times."},
+{w:"epidemic",m:"流行病",p:"名",lv:3,ex:"The epidemic spread across the region."},
+{w:"outbreak",m:"発生・勃発",p:"名",lv:3,pr:"of",ex:"An outbreak of flu closed the school."},
+{w:"quarantine",m:"隔離・検疫",p:"名",lv:3,ex:"The animals were kept in quarantine."},
+{w:"antibiotic",m:"抗生物質",p:"名",lv:3,ex:"Finish the full course of antibiotics."},
+{w:"ointment",m:"軟膏",p:"名",lv:3,ex:"Apply the ointment twice a day."},
+{w:"bandage",m:"包帯",p:"名",lv:2,ex:"Wrap a bandage around the wound."},
+{w:"crutch",m:"松葉杖",p:"名",lv:3,ex:"He walked on crutches for a month."},
+{w:"stretcher",m:"担架",p:"名",lv:3,ex:"The patient was carried on a stretcher."},
+{w:"pulse",m:"脈拍",p:"名",lv:3,ex:"The nurse checked his pulse."},
+{w:"respiration",m:"呼吸",p:"名",lv:3,ex:"Monitor the patient's respiration."},
+{w:"immunity",m:"免疫",p:"名",lv:3,pr:"to",ex:"Vaccines build immunity to disease."},
+{w:"therapy",m:"治療・療法",p:"名",lv:3,ex:"Physical therapy helped her recover."},
+{w:"rehabilitation",m:"リハビリ・社会復帰",p:"名",lv:3,ex:"Rehabilitation takes several weeks."},
+{w:"wellness",m:"健康",p:"名",lv:3,ex:"The firm runs a wellness program."},
+{w:"ecology",m:"生態系・生態学",p:"名",lv:3,ex:"The dam changed the river's ecology."},
+{w:"pollutant",m:"汚染物質",p:"名",lv:3,ex:"The plant reduced airborne pollutants."},
+{w:"biodegradable",m:"生分解性の",p:"形",lv:3,ex:"We switched to biodegradable packaging."},
+{w:"extinction",m:"絶滅",p:"名",lv:3,ex:"The species faces extinction."},
+{w:"deforestation",m:"森林伐採",p:"名",lv:3,ex:"Deforestation threatens local wildlife."},
+{w:"famine",m:"飢饉",p:"名",lv:3,ex:"The drought led to famine."},
+{w:"pesticide",m:"殺虫剤・農薬",p:"名",lv:3,ex:"The farm uses no chemical pesticides."},
+{w:"compost",m:"堆肥",p:"名",lv:3,ex:"Food scraps go into the compost bin."},
+{w:"organic",m:"有機の・オーガニックの",p:"形",lv:2,ex:"The store sells organic vegetables."},
+{w:"poultry",m:"家禽・鶏肉",p:"名",lv:3,ex:"The farm raises poultry and cattle."},
+{w:"barn",m:"納屋",p:"名",lv:3,ex:"Hay is stored in the barn."},
+{w:"silo",m:"サイロ・貯蔵庫",p:"名",lv:3,ex:"Grain is kept in the silo."},
+{w:"plow",m:"耕す",p:"動",lv:3,ex:"Farmers plow the fields in spring."},
+{w:"tractor",m:"トラクター",p:"名",lv:2,ex:"A new tractor cut harvesting time."},
+{w:"meadow",m:"牧草地・草原",p:"名",lv:3,ex:"Cows graze in the meadow."},
+{w:"pasture",m:"牧草地",p:"名",lv:3,ex:"The sheep moved to a new pasture."}
+);
+/* ==== 単語バッチ V16: 教育・出版・芸術 (lv2-3) ==== */
+WORDS.push(
+{w:"syllabus",m:"講義要項・シラバス",p:"名",lv:3,ex:"The syllabus lists all assignments."},
+{w:"dean",m:"学部長",p:"名",lv:3,ex:"The dean welcomed the new students."},
+{w:"dormitory",m:"寮",p:"名",lv:2,ex:"First-year students live in dormitories."},
+{w:"alumni",m:"卒業生",p:"名",lv:3,ex:"Alumni donated funds for the library."},
+{w:"thesis",m:"論文・主張",p:"名",lv:3,pr:"on",ex:"She wrote her thesis on trade policy."},
+{w:"dissertation",m:"博士論文",p:"名",lv:3,ex:"He is finishing his dissertation."},
+{w:"tutorial",m:"個別指導・チュートリアル",p:"名",lv:3,ex:"Watch the tutorial before starting."},
+{w:"plagiarism",m:"盗用・剽窃",p:"名",lv:3,ex:"Plagiarism results in a failing grade."},
+{w:"citation",m:"引用・表彰",p:"名",lv:3,ex:"Add citations for all sources."},
+{w:"bibliography",m:"参考文献一覧",p:"名",lv:3,ex:"The bibliography lists forty sources."},
+{w:"postgraduate",m:"大学院生・大学院の",p:"名",lv:3,ex:"She began postgraduate study abroad."},
+{w:"accreditation",m:"認定",p:"名",lv:3,ex:"The program earned full accreditation."},
+{w:"publisher",m:"出版社",p:"名",lv:2,ex:"The publisher accepted her manuscript."},
+{w:"columnist",m:"コラムニスト",p:"名",lv:3,ex:"He writes as a business columnist."},
+{w:"excerpt",m:"抜粋",p:"名",lv:3,pr:"from",ex:"Read an excerpt from the novel online."},
+{w:"anthology",m:"選集",p:"名",lv:3,ex:"Her poem appears in the anthology."},
+{w:"memoir",m:"回顧録",p:"名",lv:3,ex:"The chef published a memoir."},
+{w:"autobiography",m:"自伝",p:"名",lv:3,ex:"The singer's autobiography sold well."},
+{w:"paperback",m:"ペーパーバック",p:"名",lv:2,ex:"The paperback edition is cheaper."},
+{w:"hardcover",m:"ハードカバー",p:"名",lv:2,ex:"The hardcover comes out first."},
+{w:"preface",m:"序文",p:"名",lv:3,pr:"to",ex:"The author explains her aim in the preface."},
+{w:"appendix",m:"付録",p:"名",lv:3,ex:"Data tables are in the appendix."},
+{w:"glossary",m:"用語集",p:"名",lv:3,ex:"Check terms in the glossary."},
+{w:"footnote",m:"脚注",p:"名",lv:3,ex:"Sources are cited in footnotes."},
+{w:"mural",m:"壁画",p:"名",lv:3,ex:"A mural decorates the station wall."},
+{w:"canvas",m:"カンバス・画布",p:"名",lv:3,ex:"She paints on a large canvas."},
+{w:"easel",m:"イーゼル・画架",p:"名",lv:3,ex:"Set the painting on the easel."},
+{w:"palette",m:"パレット・色彩",p:"名",lv:3,ex:"The room has a soft color palette."},
+{w:"premiere",m:"初演・封切り",p:"名",lv:3,pr:"of",ex:"The premiere of the film is Friday."},
+{w:"encore",m:"アンコール",p:"名",lv:3,ex:"The band played two encores."},
+{w:"choreography",m:"振り付け",p:"名",lv:3,ex:"The show's choreography was stunning."},
+{w:"conductor",m:"指揮者・車掌",p:"名",lv:3,ex:"The conductor raised his baton."},
+{w:"ensemble",m:"合奏団・アンサンブル",p:"名",lv:3,ex:"A jazz ensemble plays on Fridays."},
+{w:"troupe",m:"一座・劇団",p:"名",lv:3,ex:"A dance troupe toured the country."},
+{w:"matinee",m:"昼公演",p:"名",lv:3,ex:"Matinee tickets are half price."},
+{w:"box office",m:"チケット売り場・興行成績",p:"名",lv:3,ex:"Pick up tickets at the box office."},
+{w:"usher",m:"案内係",p:"名",lv:3,ex:"An usher showed us to our seats."}
+);
+/* ==== 単語バッチ V17: 保険・不動産・雇用 (lv2-3) ==== */
+WORDS.push(
+{w:"premium",m:"保険料・割増金",p:"名",lv:3,ex:"Monthly premiums rose slightly."},
+{w:"policyholder",m:"保険契約者",p:"名",lv:3,ex:"Policyholders were notified of changes."},
+{w:"actuary",m:"保険数理士",p:"名",lv:3,ex:"An actuary calculated the risk."},
+{w:"underwriter",m:"保険引受人",p:"名",lv:3,ex:"The underwriter approved the policy."},
+{w:"deductible",m:"免責額",p:"名",lv:3,ex:"The plan has a $500 deductible."},
+{w:"indemnity",m:"補償",p:"名",lv:3,ex:"The contract includes an indemnity clause."},
+{w:"annuity",m:"年金",p:"名",lv:3,ex:"He receives a monthly annuity."},
+{w:"gratuity",m:"チップ・心付け",p:"名",lv:3,ex:"A gratuity is included in the bill."},
+{w:"stipend",m:"給付金・手当",p:"名",lv:3,ex:"Interns receive a monthly stipend."},
+{w:"commission",m:"手数料・歩合",p:"名",lv:2,pr:"on",ex:"Agents earn a commission on sales."},
+{w:"fringe benefit",m:"付加給付・福利厚生",p:"名",lv:3,ex:"A company car is a fringe benefit."},
+{w:"refinance",m:"借り換える",p:"動",lv:3,ex:"They refinanced the mortgage at a lower rate."},
+{w:"equity",m:"純資産・公平",p:"名",lv:3,ex:"They built equity in their home."},
+{w:"foreclosure",m:"差し押さえ",p:"名",lv:3,ex:"The bank began foreclosure proceedings."},
+{w:"escrow",m:"第三者預託",p:"名",lv:3,ex:"The deposit is held in escrow."},
+{w:"broker",m:"仲介業者",p:"名",lv:3,ex:"A broker arranged the office lease."},
+{w:"listing",m:"物件情報・一覧",p:"名",lv:3,ex:"New listings appear online daily."},
+{w:"zoning",m:"地域区分・用途規制",p:"名",lv:3,ex:"Zoning laws restrict tall buildings here."},
+{w:"surveyor",m:"測量士",p:"名",lv:3,ex:"A surveyor measured the lot."},
+{w:"scaffolding",m:"足場",p:"名",lv:3,ex:"Scaffolding covers the building's front."},
+{w:"excavation",m:"掘削",p:"名",lv:3,ex:"Excavation for the tower has begun."},
+{w:"insulation",m:"断熱材・断熱",p:"名",lv:3,ex:"Better insulation cuts heating bills."},
+{w:"ventilation",m:"換気",p:"名",lv:3,ex:"The kitchen needs better ventilation."},
+{w:"wiring",m:"配線",p:"名",lv:3,ex:"The old wiring was replaced."},
+{w:"drywall",m:"石膏ボード",p:"名",lv:3,ex:"The crew installed drywall today."},
+{w:"apprenticeship",m:"見習い期間",p:"名",lv:3,ex:"He completed a four-year apprenticeship."},
+{w:"vocation",m:"職業・天職",p:"名",lv:3,ex:"Teaching is her true vocation."},
+{w:"demote",m:"降格させる",p:"動",lv:3,ex:"The manager was demoted after the audit."},
+{w:"onboarding",m:"新人研修・受け入れ",p:"名",lv:3,ex:"Onboarding lasts two weeks."},
+{w:"attrition",m:"自然減・摩耗",p:"名",lv:3,ex:"Staff numbers fell through attrition."},
+{w:"furlough",m:"一時帰休",p:"名",lv:3,ex:"Workers were placed on furlough."},
+{w:"interviewer",m:"面接官",p:"名",lv:2,ex:"The interviewer asked about my goals."},
+{w:"interviewee",m:"面接を受ける人",p:"名",lv:3,ex:"Each interviewee gets thirty minutes."},
+{w:"portfolio",m:"作品集・資産一覧",p:"名",lv:3,ex:"Bring a portfolio of your designs."}
+);
+/* ==== 単語バッチ V18: 天気・IT・貿易 (lv1-3) ==== */
+WORDS.push(
+{w:"chilly",m:"肌寒い",p:"形",lv:2,ex:"It gets chilly in the evenings."},
+{w:"freezing",m:"凍えるような",p:"形",lv:2,ex:"The warehouse is freezing in winter."},
+{w:"overcast",m:"曇った",p:"形",lv:3,ex:"The sky was overcast all morning."},
+{w:"drizzle",m:"霧雨",p:"名",lv:3,ex:"A light drizzle fell at the parade."},
+{w:"downpour",m:"土砂降り",p:"名",lv:3,ex:"The picnic ended in a downpour."},
+{w:"hail",m:"ひょう・あられ",p:"名",lv:3,ex:"Hail damaged several cars."},
+{w:"sleet",m:"みぞれ",p:"名",lv:3,ex:"Sleet made the roads slippery."},
+{w:"blizzard",m:"猛吹雪",p:"名",lv:3,ex:"A blizzard closed the airport."},
+{w:"gust",m:"突風",p:"名",lv:3,pr:"of",ex:"A gust of wind blew the tent over."},
+{w:"thunder",m:"雷鳴",p:"名",lv:2,ex:"Thunder rumbled in the distance."},
+{w:"lightning",m:"稲妻",p:"名",lv:2,ex:"Lightning struck the old oak tree."},
+{w:"barometer",m:"気圧計・指標",p:"名",lv:3,ex:"Sales are a barometer of demand."},
+{w:"humidity",m:"湿度",p:"名",lv:2,ex:"High humidity makes it feel hotter."},
+{w:"precipitation",m:"降水",p:"名",lv:3,ex:"Heavy precipitation is expected tonight."},
+{w:"postage",m:"郵便料金",p:"名",lv:2,ex:"Postage is included in the price."},
+{w:"paperclip",m:"ペーパークリップ",p:"名",lv:1,ex:"Attach the pages with a paperclip."},
+{w:"binder",m:"バインダー",p:"名",lv:1,ex:"File the reports in the blue binder."},
+{w:"scanner",m:"スキャナー",p:"名",lv:1,ex:"The scanner is next to the printer."},
+{w:"cursor",m:"カーソル",p:"名",lv:2,ex:"Move the cursor to the search box."},
+{w:"logout",m:"ログアウト",p:"名",lv:2,ex:"Click logout before leaving your desk."},
+{w:"username",m:"ユーザー名",p:"名",lv:1,ex:"Enter your username and password."},
+{w:"bookmark",m:"ブックマーク・しおり",p:"名",lv:2,ex:"Save the page as a bookmark."},
+{w:"wireless",m:"無線の",p:"形",lv:2,ex:"The office has wireless internet."},
+{w:"bandwidth",m:"帯域幅・通信容量",p:"名",lv:3,ex:"Video calls use a lot of bandwidth."},
+{w:"firewall",m:"ファイアウォール",p:"名",lv:3,ex:"The firewall blocks unsafe sites."},
+{w:"malware",m:"マルウェア",p:"名",lv:3,ex:"The scan found no malware."},
+{w:"embargo",m:"禁輸措置",p:"名",lv:3,pr:"on",ex:"The embargo on exports was lifted."},
+{w:"devaluation",m:"通貨切り下げ",p:"名",lv:3,ex:"Devaluation made imports costly."},
+{w:"prosperity",m:"繁栄",p:"名",lv:3,ex:"The port brought prosperity to the town."},
+{w:"oligopoly",m:"寡占",p:"名",lv:3,ex:"The market is close to an oligopoly."},
+{w:"cartel",m:"カルテル",p:"名",lv:3,ex:"The cartel fixed fuel prices illegally."},
+{w:"antitrust",m:"独占禁止の",p:"形",lv:3,ex:"The merger faces antitrust review."},
+{w:"royalty",m:"著作権使用料・印税",p:"名",lv:3,pr:"on",ex:"She earns royalties on every copy sold."},
+{w:"infringement",m:"侵害",p:"名",lv:3,pr:"of",ex:"The court found patent infringement."},
+{w:"piracy",m:"海賊行為・著作権侵害",p:"名",lv:3,ex:"Software piracy hurts developers."},
+{w:"counterfeit",m:"偽造の",p:"形",lv:3,ex:"Counterfeit goods were seized at customs."}
 );
 </script>
 <!-- ==DATA-END== -->
